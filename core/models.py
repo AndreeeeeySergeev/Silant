@@ -27,6 +27,7 @@ class Directory(models.Model):
         MAINTENANCE_TYPE = "maintenance_type", "Вид ТО"
         FAILURE_NODE = "failure_node", "Узел отказа"
         RECOVERY_METHOD = "recovery_method", "Способ восстановления"
+        MAINTENANCE_ORGANIZATION = "maintenance_organization", "Организация, проводившая ТО"
 
     entity = models.CharField(max_length=30, choices=Entity.choices)
     name = models.CharField(max_length=255)
@@ -56,6 +57,9 @@ class Machine(models.Model):
     client = models.ForeignKey(User, on_delete=models.PROTECT, related_name="machines_as_client")
     service_company = models.ForeignKey(User, on_delete=models.PROTECT,
                                         related_name="machines_as_service_company")
+
+    def __str__(self):
+        return self.serial_number
 
     def clean(self):
         super().clean()
@@ -98,3 +102,63 @@ class Maintenance(models.Model):
                                 related_name="maintenances")
     service_company = models.ForeignKey(User, on_delete=models.PROTECT,
                                         related_name="maintenances_as_service_company")
+
+    def clean(self):
+        super().clean()
+
+        if self.maintenance_type.entity != Directory.Entity.MAINTENANCE_TYPE:
+            raise ValidationError("В поле 'Вид ТО' должна быть выбрана запись из"
+                                  "справочника 'Вид ТО'")
+
+        if self.maintenance_organization.entity != Directory.Entity.MAINTENANCE_ORGANIZATION:
+            raise ValidationError("В поле 'Организация, проводившая ТО' должна быть выбрана "
+            "организация из справочника 'Организация, проводившая ТО'")
+
+        if self.service_company.role != User.Role.SERVICE:
+            raise ValidationError(
+                "В поле 'Сервисная компания' должен быть выбран пользователь "
+                "с ролью 'Сервисная организация'"
+            )
+
+class Claim(models.Model):
+    failure_date = models.DateField()
+    operating_hours = models.PositiveIntegerField()
+    failure_node = models.ForeignKey(Directory, on_delete=models.PROTECT,
+                                     related_name="claims_by_failure_node")
+    failure_description = models.TextField()
+    recovery_method = models.ForeignKey(Directory, on_delete=models.PROTECT,
+                                        related_name="claims_by_recovery_method")
+    spare_parts = models.TextField(blank=True) # если ремонт проводился без замены деталей
+    recovery_date = models.DateField(null=True, blank=True) # если реионт ещё не проводился, то разрешаем быть пустым
+    machine = models.ForeignKey(Machine, on_delete=models.PROTECT, related_name="claims")
+    service_company = models.ForeignKey(User, on_delete=models.PROTECT,
+                                        related_name="claims_as_service_company")
+
+    # вычисляем 8 поле Время простоя техники
+    @property
+    def downtime(self):
+        if self.recovery_date and self.failure_date:
+            return (self.recovery_date - self.failure_date).days
+        return None
+
+    def clean(self):
+        super().clean()
+
+        if self.failure_node.entity !=Directory.Entity.FAILURE_NODE:
+            raise ValidationError(
+                "В поле 'Узел отказа' должна быть выбрана запись из справочника 'Узел отказа'"
+            )
+        if self.recovery_method.entity != Directory.Entity.RECOVERY_METHOD:
+            raise ValidationError(
+                "В поле 'Способ восстановления' должна быть выбрана"
+                " запись из справочника 'Способ восстановления'"
+            )
+        if self.service_company.role != User.Role.SERVICE:
+            raise ValidationError(
+                "В поле 'Сервисная компания' должен быть выбран пользователь"
+                "с ролью 'Сервисная организация'"
+            )
+        if self.recovery_date and self.recovery_date < self.failure_date:
+            raise ValidationError(
+                "Дата восстановления не может быть раньше даты отказа"
+            )

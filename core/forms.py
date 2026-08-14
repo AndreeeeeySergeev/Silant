@@ -1,5 +1,5 @@
 from django import forms
-from .models import Machine, Directory, User, Maintenance
+from .models import Machine, Directory, User, Maintenance, Claim
 
 class UserForm(forms.ModelForm):
     class Meta:
@@ -73,7 +73,32 @@ class MaintenanceForm(forms.ModelForm):
             entity=Directory.Entity.MAINTENANCE_TYPE
         )
 
-        self.fields["maintenance_organization"].queryset = Directory.objects.all()
+        self.fields["maintenance_organization"].queryset = Directory.objects.filter(
+            entity=Directory.Entity.MAINTENANCE_ORGANIZATION
+        )
+
+        self.fields["machine"].queryset = Machine.objects.all()
+
+        self.fields["service_company"].queryset = User.objects.filter(
+            role=User.Role.SERVICE,
+            is_active=True,
+        )
+
+class ClaimForm(forms.ModelForm):
+    class Meta:
+        model = Claim
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["failure_node"].queryset = Directory.objects.filter(
+            entity=Directory.Entity.FAILURE_NODE
+        )
+
+        self.fields["recovery_method"].queryset = Directory.objects.filter(
+            entity=Directory.Entity.RECOVERY_METHOD
+        )
 
         self.fields["machine"].queryset = Machine.objects.all()
 
