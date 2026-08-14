@@ -121,7 +121,7 @@ class ClaimAdmin(admin.ModelAdmin):
         "recovery_method",
         "recovery_date",
         "service_company",
-        "downtime",
+        "display_downtime",
     )
 
     list_filter = (
@@ -134,3 +134,7 @@ class ClaimAdmin(admin.ModelAdmin):
         "machine__serial_number",
         "failure_description",
     )
+
+    @admin.display(description="Время простоя техники, дней")
+    def display_downtime(self, obj):
+        return obj.downtime

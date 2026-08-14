@@ -11,10 +11,15 @@ class User(AbstractUser):
 
     role = models.CharField(
         max_length=20,
-        choices=Role.choices
+        choices=Role.choices,
+        verbose_name="Роль",
     )
-    company_name = models.CharField(max_length=255, blank=True)
-    company_description = models.TextField(blank=True)
+    company_name = models.CharField(max_length=255, blank=True, verbose_name="Название компании")
+    company_description = models.TextField(blank=True, verbose_name="Описание компании")
+
+    class Meta:
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
 
 
 class Directory(models.Model):
@@ -29,34 +34,45 @@ class Directory(models.Model):
         RECOVERY_METHOD = "recovery_method", "Способ восстановления"
         MAINTENANCE_ORGANIZATION = "maintenance_organization", "Организация, проводившая ТО"
 
-    entity = models.CharField(max_length=30, choices=Entity.choices)
-    name = models.CharField(max_length=255)
-    description = models.TextField(blank=True)
+    entity = models.CharField(max_length=30, choices=Entity.choices, verbose_name="Тип справочника")
+    name = models.CharField(max_length=255, verbose_name="Название")
+    description = models.TextField(blank=True, verbose_name="Описание")
+
+    class Meta:
+        verbose_name = "Запись справочника"
+        verbose_name_plural = "Справочник"
 
     def __str__(self):
         return f"{self.get_entity_display()}: {self.name}"
 
 class Machine(models.Model):
-    serial_number = models.CharField(max_length=255, unique=True)
-    machine_model = models.ForeignKey(Directory, on_delete=models.PROTECT, related_name="machine_models",)
-    engine_model = models.ForeignKey(Directory, on_delete=models.PROTECT, related_name="engine_models")
-    engine_serial_number = models.CharField(max_length=255)
-    transmission_model = models.ForeignKey(Directory, on_delete=models.PROTECT, related_name="transmission_models")
-    transmission_serial_number = models.CharField(max_length=255)
+    serial_number = models.CharField(max_length=255, unique=True, verbose_name="Зав. № машины")
+    machine_model = models.ForeignKey(Directory, on_delete=models.PROTECT, related_name="machine_models",
+                                      verbose_name="Модель техники",)
+    engine_model = models.ForeignKey(Directory, on_delete=models.PROTECT, related_name="engine_models",
+                                     verbose_name="Модель двигателя",)
+    engine_serial_number = models.CharField(max_length=255, verbose_name="Зав. № двигателя")
+    transmission_model = models.ForeignKey(Directory, on_delete=models.PROTECT, related_name="transmission_models",
+                                           verbose_name="Модель трансмиссии")
+    transmission_serial_number = models.CharField(max_length=255, verbose_name="Зав. № трансмиссии")
     drive_axle_model = models.ForeignKey(Directory, on_delete=models.PROTECT,
-                                         related_name="drive_axle_models")
-    drive_axle_serial_number = models.CharField(max_length=255)
+                                         related_name="drive_axle_models", verbose_name="Модел ведущего моста")
+    drive_axle_serial_number = models.CharField(max_length=255, verbose_name="Зав. № ведущего моста")
     steering_axle_model = models.ForeignKey(Directory, on_delete=models.PROTECT,
-                                            related_name="steering_axle_models")
-    steering_axle_serial_number = models.CharField(max_length=255)
-    supply_contract = models.CharField(max_length=100)
-    shipment_date = models.DateField()
-    consignee = models.CharField(max_length=100)
-    operation_address = models.CharField(max_length=300)
-    equipment = models.TextField(blank=True)
-    client = models.ForeignKey(User, on_delete=models.PROTECT, related_name="machines_as_client")
+                                            related_name="steering_axle_models",
+                                            verbose_name="Модель управляемого моста",)
+    steering_axle_serial_number = models.CharField(max_length=255, verbose_name="Зав. № управляемого моста")
+    supply_contract = models.CharField(max_length=100, verbose_name="Договор поставки №, дата")
+    shipment_date = models.DateField(verbose_name="Дата отгрузки с завода")
+    consignee = models.CharField(max_length=100, verbose_name="Грузополучатель (конечный потребитель)")
+    operation_address = models.CharField(max_length=300, verbose_name="Адрес поставки (эксплуатации)")
+    equipment = models.TextField(blank=True, verbose_name="Комплектация (доп. опции)")
+    client = models.ForeignKey(User, on_delete=models.PROTECT, related_name="machines_as_client", verbose_name="Клиент")
     service_company = models.ForeignKey(User, on_delete=models.PROTECT,
-                                        related_name="machines_as_service_company")
+                                        related_name="machines_as_service_company", verbose_name="Сервисная компания")
+    class Meta:
+        verbose_name = "Машина"
+        verbose_name_plural = "Машины"
 
     def __str__(self):
         return self.serial_number
@@ -91,17 +107,23 @@ class Machine(models.Model):
 
 class Maintenance(models.Model):
     maintenance_type = models.ForeignKey(Directory, on_delete=models.PROTECT,
-                                         related_name="maintenances_by_type")
-    maintenance_date = models.DateField()
-    operating_hours = models.PositiveIntegerField()
-    work_order_number = models.CharField(max_length=100)
-    work_order_date = models.DateField()
+                                         related_name="maintenances_by_type", verbose_name="Вид ТО",)
+    maintenance_date = models.DateField(verbose_name="Дата проведения ТО")
+    operating_hours = models.PositiveIntegerField(verbose_name="Наработка, м/час")
+    work_order_number = models.CharField(max_length=100, verbose_name="№ заказ-наряда")
+    work_order_date = models.DateField(verbose_name="Дата заказ-наряда")
     maintenance_organization = models.ForeignKey(Directory, on_delete=models.PROTECT,
-                                                 related_name="maintenances_by_organization")
+                                                 related_name="maintenances_by_organization",
+                                                 verbose_name="Организация, проводившая ТО",)
     machine = models.ForeignKey(Machine, on_delete=models.PROTECT,
-                                related_name="maintenances")
+                                related_name="maintenances", verbose_name="Машина")
     service_company = models.ForeignKey(User, on_delete=models.PROTECT,
-                                        related_name="maintenances_as_service_company")
+                                        related_name="maintenances_as_service_company",
+                                        verbose_name="Сервисная компания")
+
+    class Meta:
+        verbose_name = "Техническое обслуживание"
+        verbose_name_plural = "Техническое обслуживание"
 
     def clean(self):
         super().clean()
@@ -121,18 +143,18 @@ class Maintenance(models.Model):
             )
 
 class Claim(models.Model):
-    failure_date = models.DateField()
-    operating_hours = models.PositiveIntegerField()
+    failure_date = models.DateField(verbose_name="Дата отказа")
+    operating_hours = models.PositiveIntegerField(verbose_name="Наработка, м/час")
     failure_node = models.ForeignKey(Directory, on_delete=models.PROTECT,
-                                     related_name="claims_by_failure_node")
-    failure_description = models.TextField()
+                                     related_name="claims_by_failure_node", verbose_name="Узел отказа",)
+    failure_description = models.TextField(verbose_name="Описание отказа",)
     recovery_method = models.ForeignKey(Directory, on_delete=models.PROTECT,
-                                        related_name="claims_by_recovery_method")
-    spare_parts = models.TextField(blank=True) # если ремонт проводился без замены деталей
-    recovery_date = models.DateField(null=True, blank=True) # если реионт ещё не проводился, то разрешаем быть пустым
-    machine = models.ForeignKey(Machine, on_delete=models.PROTECT, related_name="claims")
+                                        related_name="claims_by_recovery_method", verbose_name="Способ восстановления",)
+    spare_parts = models.TextField(blank=True, verbose_name="Используемые запасные части") # если ремонт проводился без замены деталей
+    recovery_date = models.DateField(null=True, blank=True, verbose_name="Дата восстановления") # если реионт ещё не проводился, то разрешаем быть пустым
+    machine = models.ForeignKey(Machine, on_delete=models.PROTECT, related_name="claims", verbose_name="Машина")
     service_company = models.ForeignKey(User, on_delete=models.PROTECT,
-                                        related_name="claims_as_service_company")
+                                        related_name="claims_as_service_company", verbose_name="Сервисная компания",)
 
     # вычисляем 8 поле Время простоя техники
     @property
@@ -140,6 +162,10 @@ class Claim(models.Model):
         if self.recovery_date and self.failure_date:
             return (self.recovery_date - self.failure_date).days
         return None
+
+    class Meta:
+        verbose_name = "Рекламация"
+        verbose_name_plural = "Рекламации"
 
     def clean(self):
         super().clean()
