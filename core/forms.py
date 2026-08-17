@@ -66,7 +66,7 @@ class MaintenanceForm(forms.ModelForm):
         model = Maintenance
         fields = "__all__"
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.fields["maintenance_type"].queryset = Directory.objects.filter(
@@ -89,7 +89,7 @@ class ClaimForm(forms.ModelForm):
         model = Claim
         fields = "__all__"
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.fields["failure_node"].queryset = Directory.objects.filter(

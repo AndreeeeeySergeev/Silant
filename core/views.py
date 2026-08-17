@@ -1,6 +1,10 @@
-from allauth.socialaccount.sessions import engine
-from django.shortcuts import render
+from django.http import Http404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from rest_framework.exceptions import PermissionDenied
+from django.contrib.auth.views import LoginView, LogoutView
+
+from .forms import MachineForm, MaintenanceForm, ClaimForm
 from .models import *
 
 @login_required
@@ -276,3 +280,206 @@ def claim_list(request):
         context
     )
 
+@login_required
+def machine_detail(request, pk):
+    user = request.user
+
+    if user.role == User.Role.MANAGER:
+        machine = get_object_or_404(Machine, pk=pk)
+
+    elif user.role == User.Role.CLIENT:
+        machine = get_object_or_404(Machine, pk = pk, client = user)
+
+    elif user.role == User.Role.SERVICE:
+        machine = get_object_or_404(Machine, pk = pk, service_company = user)
+
+    else:
+        raise Http404
+
+    context = {
+        "machine": machine
+    }
+
+    return render(
+        request,
+        "core/machine_detail.html",
+        context,
+    )
+
+@login_required
+def maintenance_detail(request, pk):
+    user = request.user
+
+    if user.role == User.Role.MANAGER:
+        maintenance = get_object_or_404(Maintenance, pk = pk)
+
+    elif user.role == User.Role.CLIENT:
+        maintenance = get_object_or_404(Maintenance, pk = pk, machine__client = user)
+
+    elif user.role ==User.Role.SERVICE:
+        maintenance = get_object_or_404(Maintenance, pk = pk, service_company = user)
+
+    else:
+        raise Http404
+
+    context = {
+        "maintenance": maintenance,
+    }
+
+    return render (
+        request,
+        "core/maintenance_detail.html",
+        context,
+    )
+
+@login_required
+def claim_detail(request, pk):
+    user = request.user
+
+    if user.role == User.Role.MANAGER:
+        claim = get_object_or_404(Claim, pk = pk)
+
+    elif user.role == User.Role.CLIENT:
+        claim = get_object_or_404(Claim, pk = pk, machine__client = user)
+
+    elif user.role == User.Role.SERVICE:
+        claim = get_object_or_404(Claim, pk = pk, service_company = user)
+
+    else:
+        raise Http404
+
+    context = {
+        "claim": claim,
+    }
+
+    return render(
+        request,
+        "core/claim_detail.html",
+        context
+    )
+
+@login_required
+def machine_create(request):
+    if request.user.role != User.Role.MANAGER:
+        raise PermissionDenied
+
+    if request.method == "POST":
+        form = MachineForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect("core:machine_list")
+
+    else:
+        form = MachineForm()
+
+    context = {
+        "form": form,
+    }
+
+    return render(
+        request,
+        "core/machine_form.html",
+        context
+    )
+
+@login_required
+def maintenance_create(request):
+    if request.user.role not in [
+        User.Role.MANAGER,
+        User.Role.CLIENT,
+        User.Role.SERVICE,
+    ]:
+        raise PermissionDenied
+
+    if request.method == "POST":
+        form = MaintenanceForm(
+            request.POST,
+            user = request.user,
+        )
+        if form.is_valid():
+            maintenance = form.save()
+
+            if request.user.role == User.Role.SERVICE:
+                maintenance.service_company = request.user
+                maintenance.save()
+
+            return redirect("core:maintenance_list")
+
+    else:
+        form = MaintenanceForm(user = request.user)
+
+    context = {
+        "form": form,
+    }
+
+    return render(
+        request,
+        "core/maintenance_form.html",
+        context
+    )
+
+@login_required
+def claim_create(request):
+    if request.user.role not in [
+        User.Role.SERVICE,
+        User.Role.MANAGER
+    ]:
+        raise PermissionDenied
+
+    if request.method == "POST":
+        form = ClaimForm(
+            request.POST,
+            user=request.user,
+        )
+
+        if form.is_valid():
+            claim = form.save()
+
+            if request.user.role == User.Role.SERVICE:
+                claim.service_company = request.user
+                claim.save()
+
+            return redirect("core:claim_list")
+
+    else:
+        form = ClaimForm(
+            user = request.user,
+        )
+
+    context = {
+        "form": form,
+    }
+
+    return render(
+        request,
+        "core/claim_form.html",
+        context,
+    )
+
+def guest_machine_search(request):
+    serial_number = request.GET.get("serial_number")
+
+    machine = None
+
+    if serial_number:
+        machine = Machine.objects.filter(
+            serial_number = serial_number
+        ).first()
+
+    context = {
+        "machine": machine,
+        "serial_number": serial_number,
+    }
+
+    return render(
+        request,
+        "core/guest_machine_search.html",
+        context,
+    )
+
+class UserLoginView(LoginView):
+    template_name = "core/login.html"
+
+class UserLogoutView(LogoutView):
+    next_page = "core:login"
