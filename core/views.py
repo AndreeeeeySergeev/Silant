@@ -1,7 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from rest_framework.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied
 from django.contrib.auth.views import LoginView, LogoutView
 
 from .forms import MachineForm, MaintenanceForm, ClaimForm
@@ -95,13 +95,11 @@ def machine_list(request):
 
     context = {
         "machines": machines,
-
         "machine_models": machine_models,
         "engine_models": engine_models,
         "transmission_models": transmission_models,
         "steering_axle_models": steering_axle_models,
         "drive_axle_models": drive_axle_models,
-
         "current_sort": sort,
     }
 
@@ -138,11 +136,11 @@ def maintenance_list(request):
             maintenance_type_id = maintenance_type
         )
 
-    machine = request.GET.get("machine")
+    machine_serial_number = request.GET.get("machine")
 
-    if machine:
+    if machine_serial_number:
         maintenances = maintenances.filter(
-            machine_id = machine
+            machine__serial_number = machine_serial_number
         )
 
     service_company = request.GET.get("service_company")
@@ -157,6 +155,8 @@ def maintenance_list(request):
     allowed_sort_fields = {
         "maintenance_date",
         "-maintenance_date",
+        "machine__serial_number",
+        "-machine__serial_number",
     }
 
     if sort not in allowed_sort_fields:
@@ -193,6 +193,7 @@ def maintenance_list(request):
         "maintenance_types": maintenance_types,
         "machines": machines,
         "service_companies": service_companies,
+        "current_sort": sort,
     }
 
 
@@ -262,7 +263,7 @@ def claim_list(request):
         entity = Directory.Entity.RECOVERY_METHOD
     )
 
-    service_companies =User.objects.filter(
+    service_companies = User.objects.filter(
         role = User.Role.SERVICE,
         is_active = True,
     )
@@ -272,6 +273,7 @@ def claim_list(request):
         "failure_nodes": failure_nodes,
         "recovery_methods": recovery_methods,
         "service_companies": service_companies,
+        "current_sort": sort,
     }
 
     return render (
@@ -398,12 +400,7 @@ def maintenance_create(request):
             user = request.user,
         )
         if form.is_valid():
-            maintenance = form.save()
-
-            if request.user.role == User.Role.SERVICE:
-                maintenance.service_company = request.user
-                maintenance.save()
-
+            form.save()
             return redirect("core:maintenance_list")
 
     else:
@@ -434,12 +431,7 @@ def claim_create(request):
         )
 
         if form.is_valid():
-            claim = form.save()
-
-            if request.user.role == User.Role.SERVICE:
-                claim.service_company = request.user
-                claim.save()
-
+            form.save()
             return redirect("core:claim_list")
 
     else:
@@ -461,15 +453,35 @@ def guest_machine_search(request):
     serial_number = request.GET.get("serial_number")
 
     machine = None
+    message = None
 
     if serial_number:
         machine = Machine.objects.filter(
             serial_number = serial_number
+        ).values(
+            "serial_number",
+            "machine_model__name",
+            "engine_model__name",
+            "engine_serial_number",
+            "transmission_model__name",
+            "transmission_serial_number",
+            "drive_axle_model__name",
+            "drive_axle_serial_number",
+            "steering_axle_model__name",
+            "steering_axle_serial_number",
         ).first()
+
+        if not machine:
+            message = (
+                "Данных о машине с таким заводским номером нет в системе"
+            )
+
+
 
     context = {
         "machine": machine,
         "serial_number": serial_number,
+        "message": message,
     }
 
     return render(

@@ -1,11 +1,9 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from .models import User
 from .models import *
 
-from django.contrib import admin
-
-from .models import User, Directory, Machine, Maintenance, Claim
 from .forms import (
-    UserForm,
     MachineForm,
     MaintenanceForm,
     ClaimForm,
@@ -13,8 +11,7 @@ from .forms import (
 
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    form = UserForm
+class CustomUserAdmin(UserAdmin):
 
     list_display = (
         "username",
@@ -36,6 +33,54 @@ class UserAdmin(admin.ModelAdmin):
         "last_name",
         "email",
         "company_name",
+    )
+
+    # Форма редактирования существующего пользователя
+    fieldsets = UserAdmin.fieldsets + (
+        (
+            "Дополнительная информация",
+            {
+                "fields": (
+                    "role",
+                    "company_name",
+                    "company_description",
+                )
+            },
+        ),
+    )
+
+    # Форма создания нового пользователя
+    add_fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "username",
+                    "password1",
+                    "password2",
+                )
+            },
+        ),
+        (
+            "Персональные данные",
+            {
+                "fields": (
+                    "first_name",
+                    "last_name",
+                    "email",
+                )
+            },
+        ),
+        (
+            "Дополнительная информация",
+            {
+                "fields": (
+                    "role",
+                    "company_name",
+                    "company_description",
+                )
+            },
+        ),
     )
 
 

@@ -1,27 +1,6 @@
 from django import forms
 from .models import Machine, Directory, User, Maintenance, Claim
 
-class UserForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = [
-            "username",
-            "first_name",
-            "last_name",
-            "email",
-            "role",
-            "company_name",
-            "company_description",
-        ]
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        # Если создаём нового пользователя,
-        # поля компании пока скрываем
-        if self.instance.role != User.Role.SERVICE:
-            self.fields["company_name"].widget = forms.HiddenInput()
-            self.fields["company_description"].widget = forms.HiddenInput()
 
 class MachineForm(forms.ModelForm):
     class Meta:
@@ -77,12 +56,34 @@ class MaintenanceForm(forms.ModelForm):
             entity=Directory.Entity.MAINTENANCE_ORGANIZATION
         )
 
-        self.fields["machine"].queryset = Machine.objects.all()
-
         self.fields["service_company"].queryset = User.objects.filter(
             role=User.Role.SERVICE,
             is_active=True,
         )
+
+        if user is None:
+            self.fields["machine"].queryset = Machine.objects.none()
+
+        elif user.role == User.Role.MANAGER:
+            self.fields["machine"].queryset = Machine.objects.all()
+            self.fields["service_company"].queryset = User.objects.filter(
+                role = User.Role.SERVICE,
+                is_active = True
+            )
+
+        elif user.role == User.Role.CLIENT:
+            self.fields["machine"].queryset = Machine.objects.filter(
+                client=user
+            )
+
+        elif user.role == User.Role.SERVICE:
+            self.fields["service_company"].queryset = User.objects.filter(
+                pk = user.pk
+            )
+
+        else:
+            self.fields["machine"].queryset = Machine.objects.none()
+
 
 class ClaimForm(forms.ModelForm):
     class Meta:
@@ -95,14 +96,34 @@ class ClaimForm(forms.ModelForm):
         self.fields["failure_node"].queryset = Directory.objects.filter(
             entity=Directory.Entity.FAILURE_NODE
         )
-
         self.fields["recovery_method"].queryset = Directory.objects.filter(
             entity=Directory.Entity.RECOVERY_METHOD
         )
-
-        self.fields["machine"].queryset = Machine.objects.all()
 
         self.fields["service_company"].queryset = User.objects.filter(
             role=User.Role.SERVICE,
             is_active=True,
         )
+
+        if user is None:
+            self.fields["machine"].queryset = Machine.objects.none()
+
+
+        elif user.role == User.Role.MANAGER:
+            self.fields["machine"].queryset = Machine.objects.all()
+            self.fields["service_company"].queryset = User.objects.filter(
+                role=User.Role.SERVICE,
+                is_active=True,
+            )
+
+
+        elif user.role == User.Role.SERVICE:
+            self.fields["machine"].queryset = Machine.objects.filter(
+                service_company=user
+            )
+            self.fields["service_company"].queryset = User.objects.filter(
+                pk=user.pk
+            )
+
+        else:
+            self.fields["machine"].queryset = Machine.objects.none()
