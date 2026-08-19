@@ -6,13 +6,96 @@
     Рекламация
 </h2>
 
+
+<h3>
+    Информация об отказе
+</h3>
+
 <p>
-  Машина:
+    <strong>Машина:</strong>
     {{ claim.machine.serial_number }}
 </p>
 
 <p>
-  Дата отказа:
+    <strong>Дата отказа:</strong>
     {{ claim.failure_date }}
 </p>
+
+<p>
+    <strong>Наработка, м/час:</strong>
+    {{ claim.operating_hours }}
+</p>
+
+<p>
+    <strong>Описание отказа:</strong>
+    {{ claim.failure_description }}
+</p>
+
+
+<h3>
+    Узел отказа
+</h3>
+
+<p>
+    <strong>Название:</strong>
+    {{ claim.failure_node.name }}
+</p>
+
+<p>
+    <strong>Описание:</strong>
+    {{ claim.failure_node.description }}
+</p>
+
+
+<h3>
+    Восстановление
+</h3>
+
+<p>
+    <strong>Способ восстановления:</strong>
+    {{ claim.recovery_method.name }}
+</p>
+
+<p>
+    <strong>Описание способа восстановления:</strong>
+    {{ claim.recovery_method.description }}
+</p>
+
+<p>
+    <strong>Используемые запасные части:</strong>
+    {{ claim.spare_parts|default:"—" }}
+</p>
+
+<p>
+    <strong>Дата восстановления:</strong>
+    {{ claim.recovery_date|default:"—" }}
+</p>
+
+<p>
+    <strong>Время простоя, дней:</strong>
+    {{ claim.downtime|default:"—" }}
+</p>
+
+
+<h3>
+    Сервисная компания
+</h3>
+
+<p>
+    <strong>Название:</strong>
+    {{ claim.service_company.company_name }}
+</p>
+
+<p>
+    <strong>Описание:</strong>
+    {{ claim.service_company.company_description|default:"—" }}
+</p>
+
+
+<p>
+    <a href="{% url 'core:claim_list' %}">
+        Вернуться к списку рекламаций
+    </a>
+</p>
+
 {% endblock %}

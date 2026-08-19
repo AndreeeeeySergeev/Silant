@@ -1,15 +1,92 @@
 {% extends 'core/base.html' %}
+
 {% block content %}
+
 <h2>
-    ТО
+    Техническое обслуживание
 </h2>
+
+
+<h3>
+    Основная информация
+</h3>
+
 <p>
-    Машина:
-        {{ maintenance.machine.serial_number }}
+    <strong>Машина:</strong>
+    {{ maintenance.machine.serial_number }}
 </p>
+
 <p>
-    Дата:
-        {{ maintenance.maintenance_date }}
+    <strong>Дата проведения ТО:</strong>
+    {{ maintenance.maintenance_date }}
+</p>
+
+<p>
+    <strong>Наработка, м/час:</strong>
+    {{ maintenance.operating_hours }}
+</p>
+
+<p>
+    <strong>№ заказ-наряда:</strong>
+    {{ maintenance.work_order_number }}
+</p>
+
+<p>
+    <strong>Дата заказ-наряда:</strong>
+    {{ maintenance.work_order_date }}
+</p>
+
+
+<h3>
+    Вид ТО
+</h3>
+
+<p>
+    <strong>Название:</strong>
+    {{ maintenance.maintenance_type.name }}
+</p>
+
+<p>
+    <strong>Описание:</strong>
+    {{ maintenance.maintenance_type.description }}
+</p>
+
+
+<h3>
+    Организация, проводившая ТО
+</h3>
+
+<p>
+    <strong>Название:</strong>
+    {{ maintenance.maintenance_organization.name }}
+</p>
+
+<p>
+    <strong>Описание:</strong>
+    {{ maintenance.maintenance_organization.description }}
+</p>
+
+
+<h3>
+    Сервисная компания
+</h3>
+
+<p>
+    <strong>Название:</strong>
+    {{ maintenance.service_company.company_name }}
+</p>
+
+<p>
+    <strong>Описание:</strong>
+    {{ maintenance.service_company.company_description }}
+</p>
+
+
+<p>
+    <a href="{% url 'core:maintenance_list' %}">
+        Вернуться к списку ТО
+    </a>
 </p>
 
 {% endblock %}
+

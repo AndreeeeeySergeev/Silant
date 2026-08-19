@@ -1,3 +1,4 @@
+
 {% extends "core/base.html" %}
 
 {% block content %}
@@ -9,13 +10,15 @@
 
 <form method="post">
 
-{% csrf_token %}
+    {% csrf_token %}
 
-{{ form.as_p }}
+    {{ form.as_p }}
 
-<button>
-Сохранить
-</button>
+    <button type="submit">
+        Сохранить
+    </button>
+
 </form>
 
 {% endblock %}
+

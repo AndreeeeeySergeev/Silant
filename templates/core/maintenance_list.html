@@ -1,18 +1,233 @@
 {% extends 'core/base.html' %}
+
 {% block content %}
+
 <h2>
-  Техническое обслуживание
+    Техническое обслуживание
 </h2>
 
-{% for maintenance in maintenances %}
-  <p>
-    <a href="{% url 'core:maintenance_detail' maintenance.pk %}">
-        {{ maintenance.machine.serial_number }}
-    </a>
-  </p>
-{% empty %}
+
+{% if request.user.role == "manager" or request.user.role == "client" or request.user.role == "service" %}
+
+    <p>
+        <a href="{% url 'core:maintenance_create' %}">
+            Добавить ТО
+        </a>
+    </p>
+
+{% endif %}
+
+
+<form method="get">
+
+    <p>
+        <label for="maintenance_type">
+            Вид ТО:
+        </label>
+
+        <select name="maintenance_type" id="maintenance_type">
+
+            <option value="">
+                Все виды ТО
+            </option>
+
+            {% for type in maintenance_types %}
+
+                <option value="{{ type.id }}">
+                    {{ type.name }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+    </p>
+
+
+    <p>
+        <label for="machine">
+            Зав. номер машины:
+        </label>
+
+        <select name="machine" id="machine">
+
+            <option value="">
+                Все машины
+            </option>
+
+            {% for machine in machines %}
+
+                <option value="{{ machine.serial_number }}">
+                    {{ machine.serial_number }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+    </p>
+
+
+    <p>
+        <label for="service_company">
+            Сервисная компания:
+        </label>
+
+        <select name="service_company" id="service_company">
+
+            <option value="">
+                Все сервисные компании
+            </option>
+
+            {% for company in service_companies %}
+
+                <option value="{{ company.id }}">
+                    {{ company.company_name }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+    </p>
+
+
+    <button type="submit">
+        Применить фильтры
+    </button>
+
+</form>
+
+
 <p>
-  Нет данных
+    Сортировка:
 </p>
-{% endfor %}
+
+<p>
+    <a href="?sort=maintenance_date">
+        Сначала старые
+    </a>
+
+    |
+
+    <a href="?sort=-maintenance_date">
+        Сначала новые
+    </a>
+
+    |
+
+    <a href="?sort=machine__serial_number">
+        По заводскому номеру ↑
+    </a>
+
+    |
+
+    <a href="?sort=-machine__serial_number">
+        По заводскому номеру ↓
+    </a>
+</p>
+
+
+<table border="1">
+
+    <thead>
+
+        <tr>
+
+            <th>
+                Вид ТО
+            </th>
+
+            <th>
+                Дата проведения ТО
+            </th>
+
+            <th>
+                Наработка, м/час
+            </th>
+
+            <th>
+                № заказ-наряда
+            </th>
+
+            <th>
+                Дата заказ-наряда
+            </th>
+
+            <th>
+                Машина
+            </th>
+
+            <th>
+                Сервисная компания
+            </th>
+
+        </tr>
+
+    </thead>
+
+
+    <tbody>
+
+        {% for maintenance in maintenances %}
+
+            <tr>
+
+                <td>
+                    <a href="{% url 'core:maintenance_detail' maintenance.pk %}">
+                        {{ maintenance.maintenance_type.name }}
+                    </a>
+                </td>
+
+                <td>
+                    <a href="{% url 'core:maintenance_detail' maintenance.pk %}">
+                        {{ maintenance.maintenance_date }}
+                    </a>
+                </td>
+
+                <td>
+                    <a href="{% url 'core:maintenance_detail' maintenance.pk %}">
+                        {{ maintenance.operating_hours }}
+                    </a>
+                </td>
+
+                <td>
+                    <a href="{% url 'core:maintenance_detail' maintenance.pk %}">
+                        {{ maintenance.work_order_number }}
+                    </a>
+                </td>
+
+                <td>
+                    <a href="{% url 'core:maintenance_detail' maintenance.pk %}">
+                        {{ maintenance.work_order_date }}
+                    </a>
+                </td>
+
+                <td>
+                    <a href="{% url 'core:maintenance_detail' maintenance.pk %}">
+                        {{ maintenance.machine.serial_number }}
+                    </a>
+                </td>
+
+                <td>
+                    <a href="{% url 'core:maintenance_detail' maintenance.pk %}">
+                        {{ maintenance.service_company.company_name }}
+                    </a>
+                </td>
+
+            </tr>
+
+        {% empty %}
+
+            <tr>
+
+                <td colspan="7">
+                    Нет данных о техническом обслуживании
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
 {% endblock %}

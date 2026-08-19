@@ -14,25 +14,53 @@
             +7-8352-20-12-09, telegram
         </p>
 
-    {% if user.is_authenticated %}
-        <p>
-            Пользователь:
+        {% if user.is_authenticated %}
+            <p>
+                Пользователь:
                 {{ user.username }}
-        </p>
+            </p>
 
-        <a href="{% url 'core:logout' %}">Выйти</a>
-    {% else %}
-        <a href="{% url 'core:login' %}">Войти</a>
-    {% endif %}
+            <form method="post" action="{% url 'core:logout' %}">
+                {% csrf_token %}
+                <button type="submit">
+                    Выйти
+                </button>
+            </form>
+
+        {% else %}
+            <a href="{% url 'core:login' %}">
+                Войти
+            </a>
+        {% endif %}
     </div>
+
     <h1>
         Электронная сервисная книжка "Мой Силант"
     </h1>
+
+    {% if user.is_authenticated %}
+        <nav>
+            <a href="{% url 'core:machine_list' %}">
+                Машины
+            </a>
+
+            <a href="{% url 'core:maintenance_list' %}">
+                ТО
+            </a>
+
+            <a href="{% url 'core:claim_list' %}">
+                Рекламации
+            </a>
+        </nav>
+    {% endif %}
+
 </header>
 <main>
+
     {% block content %}
 
     {% endblock %}
+
 </main>
 <footer>
     <p>
@@ -41,6 +69,7 @@
     <p>
         Мой Силант 2022
     </p>
+
 </footer>
 </body>
 </html>

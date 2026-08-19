@@ -1,18 +1,133 @@
-{% extends 'core/base.html' %}
+{% extends "core/base.html" %}
+
 {% block content %}
+
 <h2>
-  Информация о машине
+    Полная информация о машине
 </h2>
-<p>
-  Заводской номер:
-    {{ machine.serial_number }}
-</p>
-<p>
-  Модель:
-    {{ machine.machine_model.name }}
-</p>
-<p>
-  Двигатель:
-    {{ machine.engine_model.name }}
-</p>
+
+<table border="1">
+
+    <tr>
+        <th>Зав. № машины</th>
+        <td>{{ machine.serial_number }}</td>
+    </tr>
+
+    <tr>
+        <th>Модель техники</th>
+        <td>
+            {{ machine.machine_model.name }}
+
+            {% if machine.machine_model.description %}
+                <br>
+                <small>{{ machine.machine_model.description }}</small>
+            {% endif %}
+        </td>
+    </tr>
+
+    <tr>
+        <th>Модель двигателя</th>
+        <td>
+            {{ machine.engine_model.name }}
+
+            {% if machine.engine_model.description %}
+                <br>
+                <small>{{ machine.engine_model.description }}</small>
+            {% endif %}
+        </td>
+    </tr>
+
+    <tr>
+        <th>Зав. № двигателя</th>
+        <td>{{ machine.engine_serial_number }}</td>
+    </tr>
+
+    <tr>
+        <th>Модель трансмиссии</th>
+        <td>
+            {{ machine.transmission_model.name }}
+
+            {% if machine.transmission_model.description %}
+                <br>
+                <small>{{ machine.transmission_model.description }}</small>
+            {% endif %}
+        </td>
+    </tr>
+
+    <tr>
+        <th>Зав. № трансмиссии</th>
+        <td>{{ machine.transmission_serial_number }}</td>
+    </tr>
+
+    <tr>
+        <th>Модель ведущего моста</th>
+        <td>
+            {{ machine.drive_axle_model.name }}
+
+            {% if machine.drive_axle_model.description %}
+                <br>
+                <small>{{ machine.drive_axle_model.description }}</small>
+            {% endif %}
+        </td>
+    </tr>
+
+    <tr>
+        <th>Зав. № ведущего моста</th>
+        <td>{{ machine.drive_axle_serial_number }}</td>
+    </tr>
+
+    <tr>
+        <th>Модель управляемого моста</th>
+        <td>
+            {{ machine.steering_axle_model.name }}
+
+            {% if machine.steering_axle_model.description %}
+                <br>
+                <small>{{ machine.steering_axle_model.description }}</small>
+            {% endif %}
+        </td>
+    </tr>
+
+    <tr>
+        <th>Зав. № управляемого моста</th>
+        <td>{{ machine.steering_axle_serial_number }}</td>
+    </tr>
+
+    <tr>
+        <th>Договор поставки</th>
+        <td>{{ machine.supply_contract }}</td>
+    </tr>
+
+    <tr>
+        <th>Дата отгрузки</th>
+        <td>{{ machine.shipment_date }}</td>
+    </tr>
+
+    <tr>
+        <th>Грузополучатель</th>
+        <td>{{ machine.consignee }}</td>
+    </tr>
+
+    <tr>
+        <th>Адрес эксплуатации</th>
+        <td>{{ machine.operation_address }}</td>
+    </tr>
+
+    <tr>
+        <th>Комплектация</th>
+        <td>{{ machine.equipment }}</td>
+    </tr>
+
+    <tr>
+        <th>Клиент</th>
+        <td>{{ machine.client }}</td>
+    </tr>
+
+    <tr>
+        <th>Сервисная компания</th>
+        <td>{{ machine.service_company }}</td>
+    </tr>
+
+</table>
+
 {% endblock %}

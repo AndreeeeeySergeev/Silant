@@ -400,10 +400,12 @@ def maintenance_create(request):
             user = request.user,
         )
         if form.is_valid():
+            print(form.errors)
             form.save()
             return redirect("core:maintenance_list")
 
     else:
+        print("ФОРМА НЕВАЛИДНА")
         form = MaintenanceForm(user = request.user)
 
     context = {
@@ -493,7 +495,7 @@ class UserLoginView(LoginView):
     next_page = "core:machine_list"
 
 class UserLogoutView(LogoutView):
-    next_page = "core:login"
+    next_page = "core:home"
 
 def home(request):
     return render(

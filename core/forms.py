@@ -77,6 +77,10 @@ class MaintenanceForm(forms.ModelForm):
             )
 
         elif user.role == User.Role.SERVICE:
+            self.fields["machine"].queryset = Machine.objects.filter(
+                service_company=user
+            )
+
             self.fields["service_company"].queryset = User.objects.filter(
                 pk = user.pk
             )
