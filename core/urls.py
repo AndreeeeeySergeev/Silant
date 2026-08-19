@@ -5,6 +5,7 @@ from .views import UserLoginView, UserLogoutView
 app_name = "core"
 
 urlpatterns = [
+    path('', views.home, name="home"),
     path("machines/", views.machine_list, name="machine_list"),
     path("machines/create/", views.machine_create, name="machine_create"),
     path("machines/<int:pk>/", views.machine_detail, name="machine_detail"),

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мой Силант</title>
+</head>
+<body>
+<header>
+    <h1>
+        Мой Силант
+    </h1>
+
+    {% if user.is_authenticated %}
+        <p>
+            Пользователь:
+                {{ user.username }}
+        </p>
+
+        <a href="{% url 'core:logout' %}">Выйти</a>
+    {% else %}
+        <a href="{% url 'core:login' %}">Войти</a>
+    {% endif %}
+</header>
+<nav>
+    <a href="{% url 'core:machine_list' %}">Машины</a>
+    <a href="{% url 'core:maintenance_list' %}">ТО</a>
+    <a href="{% url 'core:claim_list' %}">Рекламации</a>
+</nav>
+<main>
+    {% block content %}
+
+    {% endblock %}
+</main>
+<footer>
+    <p>
+        © Мой Силант
+    </p>
+</footer>
+</body>
+</html>

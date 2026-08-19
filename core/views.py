@@ -495,3 +495,9 @@ class UserLoginView(LoginView):
 
 class UserLogoutView(LogoutView):
     next_page = "core:login"
+
+def home(request):
+    return render(
+        request,
+        "core/home.html"
+    )
