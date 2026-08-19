@@ -1,0 +1,22 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+<h2>
+    Рекламации
+</h2>
+
+{% for claim in claims %}
+  <p>
+    <a href="{% url 'core:claim_detail' claim.pk %}">
+        {{ claim.machine.serial_number }}
+    </a>
+  </p>
+
+{% empty %}
+
+  <p>
+    Нет рекламаций
+  </p>
+{% endfor %}
+{% endblock %}

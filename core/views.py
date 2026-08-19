@@ -476,8 +476,6 @@ def guest_machine_search(request):
                 "Данных о машине с таким заводским номером нет в системе"
             )
 
-
-
     context = {
         "machine": machine,
         "serial_number": serial_number,
@@ -486,12 +484,13 @@ def guest_machine_search(request):
 
     return render(
         request,
-        "core/guest_machine_search.html",
+        "core/home.html",
         context,
     )
 
 class UserLoginView(LoginView):
     template_name = "core/login.html"
+    next_page = "core:machine_list"
 
 class UserLogoutView(LogoutView):
     next_page = "core:login"

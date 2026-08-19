@@ -1,0 +1,22 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+<h2>
+    Машины
+</h2>
+
+{% for machine in machines %}
+
+<p>
+    <a href="{% url 'core:machine_detail' machine.pk %}">
+        {{ machine.serial_number }}
+    </a>
+</p>
+
+{% empty %}
+<p>
+    Машины отсутствуют
+</p>
+{% endfor %}
+{% endblock %}

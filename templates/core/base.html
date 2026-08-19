@@ -2,13 +2,17 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Мой Силант</title>
+    <title>Электронная сервисная книжка "Мой Силант"</title>
 </head>
 <body>
 <header>
-    <h1>
-        Мой Силант
-    </h1>
+    <div>
+        Логотип
+    </div>
+    <div>
+        <p>
+            +7-8352-20-12-09, telegram
+        </p>
 
     {% if user.is_authenticated %}
         <p>
@@ -20,12 +24,11 @@
     {% else %}
         <a href="{% url 'core:login' %}">Войти</a>
     {% endif %}
+    </div>
+    <h1>
+        Электронная сервисная книжка "Мой Силант"
+    </h1>
 </header>
-<nav>
-    <a href="{% url 'core:machine_list' %}">Машины</a>
-    <a href="{% url 'core:maintenance_list' %}">ТО</a>
-    <a href="{% url 'core:claim_list' %}">Рекламации</a>
-</nav>
 <main>
     {% block content %}
 
@@ -33,7 +36,10 @@
 </main>
 <footer>
     <p>
-        © Мой Силант
+        +7-8352-20-12-09, telegram
+    </p>
+    <p>
+        Мой Силант 2022
     </p>
 </footer>
 </body>

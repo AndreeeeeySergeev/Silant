@@ -1,0 +1,18 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+<h2>
+    Рекламация
+</h2>
+
+<p>
+  Машина:
+    {{ claim.machine.serial_number }}
+</p>
+
+<p>
+  Дата отказа:
+    {{ claim.failure_date }}
+</p>
+{% endblock %}

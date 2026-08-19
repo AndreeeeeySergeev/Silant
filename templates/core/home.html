@@ -3,14 +3,118 @@
 
 {% block content %}
 
-<h2>
-    Главная страница
-</h2>
+<section>
 
+    <h2>
+        Проверьте комплектацию и технические характеристики техники Силант
+    </h2>
+    <form method="get" action="{% url 'core:guest_machine_search' %}">
+        <label for="serial_number">
+            Заводской номер:
+        </label>
+        <input type="text" id="serial_number" name="serial_number" value="{{ serial_number|default:'' }}">
+        <button type="submit">Поиск</button>
+    </form>
+</section>
+<section>
+    <h3>
+        Результат поиска:
+    </h3>
+    {% if message %}
+        <p>
+            {{ message }}
+        </p>
 
-<p>
-    Добро пожаловать в систему Мой Силант
-</p>
+    {% endif %}
 
+    {% if machine %}
+        <h3>
+            Информация о комплектации и технических характеристиках Вашей техники
+        </h3>
 
+        <table border="1">
+            <tr>
+                <th>
+                    Заводской номер
+                </th>
+                <td>
+                    {{ machine.serial_number }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Модель техники
+                </th>
+                <td>
+                    {{ machine.machine_model__name}}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Модель двигателя
+                </th>
+                <td>
+                    {{ machine.engine_model__name }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Заводской номер двигателя
+                </th>
+                <td>
+                    {{ machine.engine_serial_number }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Модель трансмиссии
+                </th>
+                <td>
+                    {{ machine.transmission_model__name }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Заводской номер трансмиссии
+                </th>
+                <td>
+                    {{ machine.transmission_serial_number }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Модель ведущего моста
+                </th>
+                <td>
+                    {{ machine.drive_axle_model__name }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Заводской номер ведущего моста
+                </th>
+                <td>
+                    {{ machine.drive_axle_serial_number }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Модель управляемого моста
+                </th>
+                <td>
+                    {{ machine.steering_axle_model__name }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Заводской номер управляемого моста
+                </th>
+                <td>
+                    {{ machine.steering_axle_serial_number }}
+                </td>
+            </tr>
+        </table>
+    {% endif %}
+</section>
 {% endblock %}
+

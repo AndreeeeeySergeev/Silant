@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>
+    ТО
+</h2>
+<p>
+    Машина:
+        {{ maintenance.machine.serial_number }}
+</p>
+<p>
+    Дата:
+        {{ maintenance.maintenance_date }}
+</p>
+
+{% endblock %}

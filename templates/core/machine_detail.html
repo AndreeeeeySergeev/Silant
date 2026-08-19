@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>
+  Информация о машине
+</h2>
+<p>
+  Заводской номер:
+    {{ machine.serial_number }}
+</p>
+<p>
+  Модель:
+    {{ machine.machine_model.name }}
+</p>
+<p>
+  Двигатель:
+    {{ machine.engine_model.name }}
+</p>
+{% endblock %}
