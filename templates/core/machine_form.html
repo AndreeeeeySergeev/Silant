@@ -4,61 +4,37 @@
 
 {% block extra_css %}
 
-<link
-    rel="stylesheet"
-    href="{% static 'css/machine.css' %}"
->
+<link rel="stylesheet" href="{% static 'css/machine.css' %}">
 
 {% endblock %}
 
 {% block content %}
 
 <section class="machine-form">
-
     <div class="machine-form__header">
-
         <h2 class="machine-form__title">
             Добавление машины
         </h2>
-
     </div>
 
-
-    <form
-        class="machine-form__form"
-        method="post"
-    >
+    <form class="machine-form__form" method="post">
 
         {% csrf_token %}
 
-
         <div class="machine-form__fields">
-
             {{ form.as_p }}
-
         </div>
 
 
         <div class="machine-form__actions">
-
-            <button
-                class="machine-form__submit"
-                type="submit"
-            >
+            <button class="machine-form__submit" type="submit">
                 Сохранить
             </button>
-
-            <a
-                class="machine-form__cancel"
-                href="{% url 'core:machine_list' %}"
-            >
+            <a class="machine-form__cancel" href="{% url 'core:machine_list' %}">
                 Отмена
             </a>
-
         </div>
-
     </form>
-
 </section>
 
 {% endblock %}

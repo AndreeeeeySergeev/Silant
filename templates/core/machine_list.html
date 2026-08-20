@@ -4,55 +4,43 @@
 
 {% block extra_css %}
 
-<link
-    rel="stylesheet"
-    href="{% static 'css/machine.css' %}"
->
+<link rel="stylesheet" href="{% static 'css/machine.css' %}">
 
 {% endblock %}
 
 {% block content %}
 
 <section class="machines">
-
     <div class="machines__header">
-
         <h2 class="machines__title">
             Машины
         </h2>
-
     </div>
-
 
     <div class="machines__list">
 
         {% for machine in machines %}
 
-            <a
-                class="machine-card"
-                href="{% url 'core:machine_detail' machine.pk %}"
-            >
+        <a class="machine-card" href="{% url 'core:machine_detail' machine.pk %}">
 
                 <span class="machine-card__label">
                     Заводской номер
                 </span>
 
-                <span class="machine-card__serial">
+            <span class="machine-card__serial">
                     {{ machine.serial_number }}
                 </span>
 
-            </a>
+        </a>
 
         {% empty %}
 
-            <p class="machines__empty">
-                Машины отсутствуют
-            </p>
+        <p class="machines__empty">
+            Машины отсутствуют
+        </p>
 
         {% endfor %}
-
     </div>
-
 </section>
 
 {% endblock %}

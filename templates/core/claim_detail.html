@@ -4,39 +4,29 @@
 
 {% block extra_css %}
 
-<link
-    rel="stylesheet"
-    href="{% static 'css/claim.css' %}"
->
+<link rel="stylesheet" href="{% static 'css/claim.css' %}">
 
 {% endblock %}
 
 {% block content %}
 
 <section class="claim-detail">
-
     <div class="claim-detail__header">
-
         <h2 class="claim-detail__title">
             Рекламация
         </h2>
-
     </div>
 
 
     <div class="claim-detail__section">
-
         <h3 class="claim-detail__section-title">
             Информация об отказе
         </h3>
-
         <div class="claim-detail__info">
-
             <div class="claim-detail__row">
                 <span class="claim-detail__label">
                     Машина
                 </span>
-
                 <span class="claim-detail__value">
                     {{ claim.machine.serial_number }}
                 </span>
@@ -74,22 +64,17 @@
                     {{ claim.failure_description }}
                 </span>
             </div>
-
         </div>
-
     </div>
 
 
     <div class="claim-detail__section">
-
         <h3 class="claim-detail__section-title">
             Узел отказа
         </h3>
 
         <div class="claim-detail__info">
-
             <div class="claim-detail__row">
-
                 <span class="claim-detail__label">
                     Название
                 </span>
@@ -97,12 +82,10 @@
                 <span class="claim-detail__value">
                     {{ claim.failure_node.name }}
                 </span>
-
             </div>
 
 
             <div class="claim-detail__row">
-
                 <span class="claim-detail__label">
                     Описание
                 </span>
@@ -110,24 +93,19 @@
                 <span class="claim-detail__value claim-detail__description">
                     {{ claim.failure_node.description }}
                 </span>
-
             </div>
 
         </div>
-
     </div>
 
 
     <div class="claim-detail__section">
-
         <h3 class="claim-detail__section-title">
             Восстановление
         </h3>
 
         <div class="claim-detail__info">
-
             <div class="claim-detail__row">
-
                 <span class="claim-detail__label">
                     Способ восстановления
                 </span>
@@ -135,12 +113,10 @@
                 <span class="claim-detail__value">
                     {{ claim.recovery_method.name }}
                 </span>
-
             </div>
 
 
             <div class="claim-detail__row">
-
                 <span class="claim-detail__label">
                     Описание способа восстановления
                 </span>
@@ -148,12 +124,10 @@
                 <span class="claim-detail__value claim-detail__description">
                     {{ claim.recovery_method.description }}
                 </span>
-
             </div>
 
 
             <div class="claim-detail__row">
-
                 <span class="claim-detail__label">
                     Используемые запасные части
                 </span>
@@ -161,12 +135,10 @@
                 <span class="claim-detail__value">
                     {{ claim.spare_parts|default:"—" }}
                 </span>
-
             </div>
 
 
             <div class="claim-detail__row">
-
                 <span class="claim-detail__label">
                     Дата восстановления
                 </span>
@@ -174,12 +146,10 @@
                 <span class="claim-detail__value">
                     {{ claim.recovery_date|default:"—" }}
                 </span>
-
             </div>
 
 
             <div class="claim-detail__row">
-
                 <span class="claim-detail__label">
                     Время простоя, дней
                 </span>
@@ -187,24 +157,17 @@
                 <span class="claim-detail__value">
                     {{ claim.downtime|default:"—" }}
                 </span>
-
             </div>
-
         </div>
-
     </div>
 
 
     <div class="claim-detail__section">
-
         <h3 class="claim-detail__section-title">
             Сервисная компания
         </h3>
-
         <div class="claim-detail__info">
-
             <div class="claim-detail__row">
-
                 <span class="claim-detail__label">
                     Название
                 </span>
@@ -212,12 +175,10 @@
                 <span class="claim-detail__value">
                     {{ claim.service_company.company_name }}
                 </span>
-
             </div>
 
 
             <div class="claim-detail__row">
-
                 <span class="claim-detail__label">
                     Описание
                 </span>
@@ -225,25 +186,19 @@
                 <span class="claim-detail__value claim-detail__description">
                     {{ claim.service_company.company_description|default:"—" }}
                 </span>
-
             </div>
-
         </div>
-
     </div>
 
 
     <div class="claim-detail__footer">
-
         <a
-            class="claim-detail__back"
-            href="{% url 'core:claim_list' %}"
+                class="claim-detail__back"
+                href="{% url 'core:claim_list' %}"
         >
             ← Вернуться к списку рекламаций
         </a>
-
     </div>
-
 </section>
 
 {% endblock %}

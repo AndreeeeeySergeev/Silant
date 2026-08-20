@@ -2,84 +2,83 @@
 
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
         Электронная сервисная книжка "Мой Силант"
     </title>
 
-    <link
-        rel="stylesheet"
-        href="{% static 'css/style.css' %}"
-    >
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
     {% block extra_css %}
     {% endblock %}
 
-</head>
 
+</head>
 
 <body>
 
 <div class="page">
 
     <header class="header">
-
         <div class="container">
-
             <div class="header__top">
-
                 <div class="header__logo">
                     Логотип
                 </div>
 
-
                 <div class="header__contacts">
-
                     <p class="header__contact">
-                        +7-8352-20-12-09, telegram
+                        +7-8352-20-12-09
+                        <span
+                                class="telegram-icon"
+                                aria-label="Telegram"
+                                title="Telegram"
+                        >
+                        <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                        >
+                            <path
+                                    d="M21.9 4.6 18.7 19.7c-.2 1.1-.8 1.4-1.7.9l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.8 8.7-7.9c.4-.4-.1-.6-.6-.2L6.6 14.1 2 12.7c-1-.3-1-1 .2-1.5L20.1 4.3c.8-.3 1.9.2 1.8.3z"
+                            />
+                        </svg>
+                    </span>
                     </p>
 
 
                     {% if user.is_authenticated %}
 
-                        <p class="header__user">
-                            Пользователь:
-                            {{ user.username }}
-                        </p>
+                    <p class="header__user">
+                        Пользователь:
+                        {{ user.username }}
+                    </p>
 
-
-                        <form
+                    <form
                             method="post"
-                            action="{% url 'core:logout' %}"
-                        >
+                            action="{% url 'core:logout' %}">
 
-                            {% csrf_token %}
+                        {% csrf_token %}
 
-                            <button
+                        <button
                                 class="button button--logout"
                                 type="submit"
-                            >
-                                Выйти
-                            </button>
+                        >
+                            Выйти
+                        </button>
 
-                        </form>
+                    </form>
 
                     {% else %}
 
-                        <a
+                    <a
                             class="button button--login"
                             href="{% url 'core:login' %}"
-                        >
-                            Войти
-                        </a>
+                    >
+                        Войти
+                    </a>
 
                     {% endif %}
 
@@ -95,30 +94,30 @@
 
             {% if user.is_authenticated %}
 
-                <nav class="navigation">
+            <nav class="navigation">
 
-                    <a
+                <a
                         class="navigation__link"
                         href="{% url 'core:machine_list' %}"
-                    >
-                        Машины
-                    </a>
+                >
+                    Машины
+                </a>
 
-                    <a
+                <a
                         class="navigation__link"
                         href="{% url 'core:maintenance_list' %}"
-                    >
-                        ТО
-                    </a>
+                >
+                    ТО
+                </a>
 
-                    <a
+                <a
                         class="navigation__link"
                         href="{% url 'core:claim_list' %}"
-                    >
-                        Рекламации
-                    </a>
+                >
+                    Рекламации
+                </a>
 
-                </nav>
+            </nav>
 
             {% endif %}
 
@@ -144,20 +143,29 @@
         <div class="container footer__content">
 
             <p>
-                +7-8352-20-12-09, telegram
+                +7-8352-20-12-09
+
+                <span
+                        class="telegram-icon"
+                        aria-label="Telegram"
+                        title="Telegram"
+                >
+                <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                >
+                    <path
+                            d="M21.9 4.6 18.7 19.7c-.2 1.1-.8 1.4-1.7.9l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.8 8.7-7.9c.4-.4-.1-.6-.6-.2L6.6 14.1 2 12.7c-1-.3-1-1 .2-1.5L20.1 4.3c.8-.3 1.9.2 1.8.3z"
+                    />
+                </svg>
+            </span>
             </p>
 
             <p>
                 Мой Силант 2022
             </p>
-
         </div>
-
     </footer>
-
 </div>
-
 </body>
-
 </html>
-

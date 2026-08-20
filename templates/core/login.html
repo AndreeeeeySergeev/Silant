@@ -4,19 +4,14 @@
 
 {% block extra_css %}
 
-<link
-    rel="stylesheet"
-    href="{% static 'css/login.css' %}"
->
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
 
 {% endblock %}
 
 {% block content %}
 
 <section class="login">
-
     <div class="login__header">
-
         <h2 class="login__title">
             Вход в систему
         </h2>
@@ -24,10 +19,7 @@
     </div>
 
 
-    <form
-        class="login__form"
-        method="post"
-    >
+    <form class="login__form" method="post">
 
         {% csrf_token %}
 
@@ -35,20 +27,15 @@
             {{ form.as_p }}
         </div>
 
-
         <div class="login__actions">
-
             <button
-                class="login__submit"
-                type="submit"
+                    class="login__submit"
+                    type="submit"
             >
                 Войти
             </button>
-
         </div>
-
     </form>
-
 </section>
 
 {% endblock %}

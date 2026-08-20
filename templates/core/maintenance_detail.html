@@ -4,35 +4,27 @@
 
 {% block extra_css %}
 
-<link
-    rel="stylesheet"
-    href="{% static 'css/maintenance.css' %}"
->
+<link rel="stylesheet" href="{% static 'css/maintenance.css' %}">
 
 {% endblock %}
 
 {% block content %}
 
 <section class="maintenance-detail">
-
     <div class="maintenance-detail__header">
-
         <h2 class="maintenance-detail__title">
             Техническое обслуживание
         </h2>
-
     </div>
 
 
     <div class="maintenance-detail__section">
-
         <h3 class="maintenance-detail__section-title">
             Основная информация
         </h3>
 
 
         <div class="maintenance-detail__info">
-
             <div class="maintenance-detail__row">
                 <span class="maintenance-detail__label">
                     Машина
@@ -42,7 +34,6 @@
                     {{ maintenance.machine.serial_number }}
                 </span>
             </div>
-
 
             <div class="maintenance-detail__row">
                 <span class="maintenance-detail__label">
@@ -86,23 +77,17 @@
                     {{ maintenance.work_order_date }}
                 </span>
             </div>
-
         </div>
-
     </div>
 
 
     <div class="maintenance-detail__section">
-
         <h3 class="maintenance-detail__section-title">
             Вид ТО
         </h3>
 
-
         <div class="maintenance-detail__info">
-
             <div class="maintenance-detail__row">
-
                 <span class="maintenance-detail__label">
                     Название
                 </span>
@@ -110,12 +95,10 @@
                 <span class="maintenance-detail__value">
                     {{ maintenance.maintenance_type.name }}
                 </span>
-
             </div>
 
 
             <div class="maintenance-detail__row">
-
                 <span class="maintenance-detail__label">
                     Описание
                 </span>
@@ -123,25 +106,19 @@
                 <span class="maintenance-detail__value maintenance-detail__description">
                     {{ maintenance.maintenance_type.description }}
                 </span>
-
             </div>
-
         </div>
-
     </div>
 
 
     <div class="maintenance-detail__section">
-
         <h3 class="maintenance-detail__section-title">
             Организация, проводившая ТО
         </h3>
 
 
         <div class="maintenance-detail__info">
-
             <div class="maintenance-detail__row">
-
                 <span class="maintenance-detail__label">
                     Название
                 </span>
@@ -149,12 +126,10 @@
                 <span class="maintenance-detail__value">
                     {{ maintenance.maintenance_organization.name }}
                 </span>
-
             </div>
 
 
             <div class="maintenance-detail__row">
-
                 <span class="maintenance-detail__label">
                     Описание
                 </span>
@@ -162,25 +137,19 @@
                 <span class="maintenance-detail__value maintenance-detail__description">
                     {{ maintenance.maintenance_organization.description }}
                 </span>
-
             </div>
-
         </div>
-
     </div>
 
 
     <div class="maintenance-detail__section">
-
         <h3 class="maintenance-detail__section-title">
             Сервисная компания
         </h3>
 
 
         <div class="maintenance-detail__info">
-
             <div class="maintenance-detail__row">
-
                 <span class="maintenance-detail__label">
                     Название
                 </span>
@@ -188,12 +157,10 @@
                 <span class="maintenance-detail__value">
                     {{ maintenance.service_company.company_name }}
                 </span>
-
             </div>
 
 
             <div class="maintenance-detail__row">
-
                 <span class="maintenance-detail__label">
                     Описание
                 </span>
@@ -201,25 +168,16 @@
                 <span class="maintenance-detail__value maintenance-detail__description">
                     {{ maintenance.service_company.company_description }}
                 </span>
-
             </div>
-
         </div>
-
     </div>
 
 
     <div class="maintenance-detail__footer">
-
-        <a
-            class="maintenance-detail__back"
-            href="{% url 'core:maintenance_list' %}"
-        >
+        <a class="maintenance-detail__back" href="{% url 'core:maintenance_list' %}">
             ← Вернуться к списку ТО
         </a>
-
     </div>
-
 </section>
 
 {% endblock %}

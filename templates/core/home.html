@@ -4,10 +4,7 @@
 
 {% block extra_css %}
 
-<link
-    rel="stylesheet"
-    href="{% static 'css/home.css' %}"
->
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
 
 {% endblock %}
 
@@ -21,36 +18,32 @@
 
 
     <form
-        class="home-search__form"
-        method="get"
-        action="{% url 'core:guest_machine_search' %}">
+            class="home-search__form"
+            method="get"
+            action="{% url 'core:guest_machine_search' %}">
 
         <label
-            class="home-search__label"
-            for="serial_number">
+                class="home-search__label"
+                for="serial_number">
             Заводской номер:
         </label>
 
 
         <div class="home-search__controls">
-
             <input
-                class="home-search__input"
-                type="text"
-                id="serial_number"
-                name="serial_number"
-                value="{{ serial_number|default:'' }}">
+                    class="home-search__input"
+                    type="text"
+                    id="serial_number"
+                    name="serial_number"
+                    value="{{ serial_number|default:'' }}">
 
             <button
-                class="button home-search__button"
-                type="submit">
+                    class="button home-search__button"
+                    type="submit">
                 Поиск
             </button>
-
         </div>
-
     </form>
-
 </section>
 
 
@@ -60,130 +53,122 @@
         Результат поиска:
     </h3>
 
-
     {% if message %}
 
-        <p class="search-result__message">
-            {{ message }}
-        </p>
+    <p class="search-result__message">
+        {{ message }}
+    </p>
 
     {% endif %}
 
 
     {% if machine %}
 
-        <div class="search-result__content">
+    <div class="search-result__content">
+        <h3 class="search-result__subtitle">
+            Информация о комплектации и технических характеристиках Вашей техники
+        </h3>
 
-            <h3 class="search-result__subtitle">
-                Информация о комплектации и технических характеристиках Вашей техники
-            </h3>
+        <div class="table-wrapper">
 
-
-            <div class="table-wrapper">
-
-                <table
+            <table
                     class="data-table data-table--machine"
                     border="1"
-                >
+            >
+                <tr>
+                    <th>
+                        Заводской номер
+                    </th>
+                    <td>
+                        {{ machine.serial_number }}
+                    </td>
+                </tr>
 
-                    <tr>
-                        <th>
-                            Заводской номер
-                        </th>
-                        <td>
-                            {{ machine.serial_number }}
-                        </td>
-                    </tr>
+                <tr>
+                    <th>
+                        Модель техники
+                    </th>
+                    <td>
+                        {{ machine.machine_model__name }}
+                    </td>
+                </tr>
 
-                    <tr>
-                        <th>
-                            Модель техники
-                        </th>
-                        <td>
-                            {{ machine.machine_model__name }}
-                        </td>
-                    </tr>
+                <tr>
+                    <th>
+                        Модель двигателя
+                    </th>
+                    <td>
+                        {{ machine.engine_model__name }}
+                    </td>
+                </tr>
 
-                    <tr>
-                        <th>
-                            Модель двигателя
-                        </th>
-                        <td>
-                            {{ machine.engine_model__name }}
-                        </td>
-                    </tr>
+                <tr>
+                    <th>
+                        Заводской номер двигателя
+                    </th>
+                    <td>
+                        {{ machine.engine_serial_number }}
+                    </td>
+                </tr>
 
-                    <tr>
-                        <th>
-                            Заводской номер двигателя
-                        </th>
-                        <td>
-                            {{ machine.engine_serial_number }}
-                        </td>
-                    </tr>
+                <tr>
+                    <th>
+                        Модель трансмиссии
+                    </th>
+                    <td>
+                        {{ machine.transmission_model__name }}
+                    </td>
+                </tr>
 
-                    <tr>
-                        <th>
-                            Модель трансмиссии
-                        </th>
-                        <td>
-                            {{ machine.transmission_model__name }}
-                        </td>
-                    </tr>
+                <tr>
+                    <th>
+                        Заводской номер трансмиссии
+                    </th>
+                    <td>
+                        {{ machine.transmission_serial_number }}
+                    </td>
+                </tr>
 
-                    <tr>
-                        <th>
-                            Заводской номер трансмиссии
-                        </th>
-                        <td>
-                            {{ machine.transmission_serial_number }}
-                        </td>
-                    </tr>
+                <tr>
+                    <th>
+                        Модель ведущего моста
+                    </th>
+                    <td>
+                        {{ machine.drive_axle_model__name }}
+                    </td>
+                </tr>
 
-                    <tr>
-                        <th>
-                            Модель ведущего моста
-                        </th>
-                        <td>
-                            {{ machine.drive_axle_model__name }}
-                        </td>
-                    </tr>
+                <tr>
+                    <th>
+                        Заводской номер ведущего моста
+                    </th>
+                    <td>
+                        {{ machine.drive_axle_serial_number }}
+                    </td>
+                </tr>
 
-                    <tr>
-                        <th>
-                            Заводской номер ведущего моста
-                        </th>
-                        <td>
-                            {{ machine.drive_axle_serial_number }}
-                        </td>
-                    </tr>
+                <tr>
+                    <th>
+                        Модель управляемого моста
+                    </th>
+                    <td>
+                        {{ machine.steering_axle_model__name }}
+                    </td>
+                </tr>
 
-                    <tr>
-                        <th>
-                            Модель управляемого моста
-                        </th>
-                        <td>
-                            {{ machine.steering_axle_model__name }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th>
-                            Заводской номер управляемого моста
-                        </th>
-                        <td>
-                            {{ machine.steering_axle_serial_number }}
-                        </td>
-                    </tr>
-
-                </table>
-
-            </div>
-
+                <tr>
+                    <th>
+                        Заводской номер управляемого моста
+                    </th>
+                    <td>
+                        {{ machine.steering_axle_serial_number }}
+                    </td>
+                </tr>
+            </table>
         </div>
+    </div>
 
     {% endif %}
-
 </section>
 
 {% endblock %}

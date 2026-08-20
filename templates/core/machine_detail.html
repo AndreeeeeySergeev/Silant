@@ -4,26 +4,19 @@
 
 {% block extra_css %}
 
-<link
-    rel="stylesheet"
-    href="{% static 'css/machine.css' %}"
->
+<link rel="stylesheet" href="{% static 'css/machine.css' %}">
 
 {% endblock %}
 
 {% block content %}
 
 <section class="machine-detail">
-
     <h2 class="machine-detail__title">
         Полная информация о машине
     </h2>
 
-
     <div class="machine-detail__table-wrapper">
-
         <table class="machine-detail__table">
-
             <tr>
                 <th>Зав. № машины</th>
                 <td>{{ machine.serial_number }}</td>
@@ -35,9 +28,9 @@
                     {{ machine.machine_model.name }}
 
                     {% if machine.machine_model.description %}
-                        <small class="machine-detail__description">
-                            {{ machine.machine_model.description }}
-                        </small>
+                    <small class="machine-detail__description">
+                        {{ machine.machine_model.description }}
+                    </small>
                     {% endif %}
                 </td>
             </tr>
@@ -48,9 +41,9 @@
                     {{ machine.engine_model.name }}
 
                     {% if machine.engine_model.description %}
-                        <small class="machine-detail__description">
-                            {{ machine.engine_model.description }}
-                        </small>
+                    <small class="machine-detail__description">
+                        {{ machine.engine_model.description }}
+                    </small>
                     {% endif %}
                 </td>
             </tr>
@@ -66,9 +59,9 @@
                     {{ machine.transmission_model.name }}
 
                     {% if machine.transmission_model.description %}
-                        <small class="machine-detail__description">
-                            {{ machine.transmission_model.description }}
-                        </small>
+                    <small class="machine-detail__description">
+                        {{ machine.transmission_model.description }}
+                    </small>
                     {% endif %}
                 </td>
             </tr>
@@ -84,9 +77,9 @@
                     {{ machine.drive_axle_model.name }}
 
                     {% if machine.drive_axle_model.description %}
-                        <small class="machine-detail__description">
-                            {{ machine.drive_axle_model.description }}
-                        </small>
+                    <small class="machine-detail__description">
+                        {{ machine.drive_axle_model.description }}
+                    </small>
                     {% endif %}
                 </td>
             </tr>
@@ -102,9 +95,9 @@
                     {{ machine.steering_axle_model.name }}
 
                     {% if machine.steering_axle_model.description %}
-                        <small class="machine-detail__description">
-                            {{ machine.steering_axle_model.description }}
-                        </small>
+                    <small class="machine-detail__description">
+                        {{ machine.steering_axle_model.description }}
+                    </small>
                     {% endif %}
                 </td>
             </tr>
@@ -148,11 +141,8 @@
                 <th>Сервисная компания</th>
                 <td>{{ machine.service_company }}</td>
             </tr>
-
         </table>
-
     </div>
-
 </section>
 
 {% endblock %}
