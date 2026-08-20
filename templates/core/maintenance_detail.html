@@ -1,92 +1,225 @@
-{% extends 'core/base.html' %}
+{% extends "core/base.html" %}
 
-{% block content %}
+{% load static %}
 
-<h2>
-    Техническое обслуживание
-</h2>
+{% block extra_css %}
 
-
-<h3>
-    Основная информация
-</h3>
-
-<p>
-    <strong>Машина:</strong>
-    {{ maintenance.machine.serial_number }}
-</p>
-
-<p>
-    <strong>Дата проведения ТО:</strong>
-    {{ maintenance.maintenance_date }}
-</p>
-
-<p>
-    <strong>Наработка, м/час:</strong>
-    {{ maintenance.operating_hours }}
-</p>
-
-<p>
-    <strong>№ заказ-наряда:</strong>
-    {{ maintenance.work_order_number }}
-</p>
-
-<p>
-    <strong>Дата заказ-наряда:</strong>
-    {{ maintenance.work_order_date }}
-</p>
-
-
-<h3>
-    Вид ТО
-</h3>
-
-<p>
-    <strong>Название:</strong>
-    {{ maintenance.maintenance_type.name }}
-</p>
-
-<p>
-    <strong>Описание:</strong>
-    {{ maintenance.maintenance_type.description }}
-</p>
-
-
-<h3>
-    Организация, проводившая ТО
-</h3>
-
-<p>
-    <strong>Название:</strong>
-    {{ maintenance.maintenance_organization.name }}
-</p>
-
-<p>
-    <strong>Описание:</strong>
-    {{ maintenance.maintenance_organization.description }}
-</p>
-
-
-<h3>
-    Сервисная компания
-</h3>
-
-<p>
-    <strong>Название:</strong>
-    {{ maintenance.service_company.company_name }}
-</p>
-
-<p>
-    <strong>Описание:</strong>
-    {{ maintenance.service_company.company_description }}
-</p>
-
-
-<p>
-    <a href="{% url 'core:maintenance_list' %}">
-        Вернуться к списку ТО
-    </a>
-</p>
+<link
+    rel="stylesheet"
+    href="{% static 'css/maintenance.css' %}"
+>
 
 {% endblock %}
 
+{% block content %}
+
+<section class="maintenance-detail">
+
+    <div class="maintenance-detail__header">
+
+        <h2 class="maintenance-detail__title">
+            Техническое обслуживание
+        </h2>
+
+    </div>
+
+
+    <div class="maintenance-detail__section">
+
+        <h3 class="maintenance-detail__section-title">
+            Основная информация
+        </h3>
+
+
+        <div class="maintenance-detail__info">
+
+            <div class="maintenance-detail__row">
+                <span class="maintenance-detail__label">
+                    Машина
+                </span>
+
+                <span class="maintenance-detail__value">
+                    {{ maintenance.machine.serial_number }}
+                </span>
+            </div>
+
+
+            <div class="maintenance-detail__row">
+                <span class="maintenance-detail__label">
+                    Дата проведения ТО
+                </span>
+
+                <span class="maintenance-detail__value">
+                    {{ maintenance.maintenance_date }}
+                </span>
+            </div>
+
+
+            <div class="maintenance-detail__row">
+                <span class="maintenance-detail__label">
+                    Наработка, м/час
+                </span>
+
+                <span class="maintenance-detail__value">
+                    {{ maintenance.operating_hours }}
+                </span>
+            </div>
+
+
+            <div class="maintenance-detail__row">
+                <span class="maintenance-detail__label">
+                    № заказ-наряда
+                </span>
+
+                <span class="maintenance-detail__value">
+                    {{ maintenance.work_order_number }}
+                </span>
+            </div>
+
+
+            <div class="maintenance-detail__row">
+                <span class="maintenance-detail__label">
+                    Дата заказ-наряда
+                </span>
+
+                <span class="maintenance-detail__value">
+                    {{ maintenance.work_order_date }}
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="maintenance-detail__section">
+
+        <h3 class="maintenance-detail__section-title">
+            Вид ТО
+        </h3>
+
+
+        <div class="maintenance-detail__info">
+
+            <div class="maintenance-detail__row">
+
+                <span class="maintenance-detail__label">
+                    Название
+                </span>
+
+                <span class="maintenance-detail__value">
+                    {{ maintenance.maintenance_type.name }}
+                </span>
+
+            </div>
+
+
+            <div class="maintenance-detail__row">
+
+                <span class="maintenance-detail__label">
+                    Описание
+                </span>
+
+                <span class="maintenance-detail__value maintenance-detail__description">
+                    {{ maintenance.maintenance_type.description }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="maintenance-detail__section">
+
+        <h3 class="maintenance-detail__section-title">
+            Организация, проводившая ТО
+        </h3>
+
+
+        <div class="maintenance-detail__info">
+
+            <div class="maintenance-detail__row">
+
+                <span class="maintenance-detail__label">
+                    Название
+                </span>
+
+                <span class="maintenance-detail__value">
+                    {{ maintenance.maintenance_organization.name }}
+                </span>
+
+            </div>
+
+
+            <div class="maintenance-detail__row">
+
+                <span class="maintenance-detail__label">
+                    Описание
+                </span>
+
+                <span class="maintenance-detail__value maintenance-detail__description">
+                    {{ maintenance.maintenance_organization.description }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="maintenance-detail__section">
+
+        <h3 class="maintenance-detail__section-title">
+            Сервисная компания
+        </h3>
+
+
+        <div class="maintenance-detail__info">
+
+            <div class="maintenance-detail__row">
+
+                <span class="maintenance-detail__label">
+                    Название
+                </span>
+
+                <span class="maintenance-detail__value">
+                    {{ maintenance.service_company.company_name }}
+                </span>
+
+            </div>
+
+
+            <div class="maintenance-detail__row">
+
+                <span class="maintenance-detail__label">
+                    Описание
+                </span>
+
+                <span class="maintenance-detail__value maintenance-detail__description">
+                    {{ maintenance.service_company.company_description }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="maintenance-detail__footer">
+
+        <a
+            class="maintenance-detail__back"
+            href="{% url 'core:maintenance_list' %}"
+        >
+            ← Вернуться к списку ТО
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

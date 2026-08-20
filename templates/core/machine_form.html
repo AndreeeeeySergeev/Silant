@@ -1,11 +1,64 @@
-{% extends 'core/base.html' %}
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/machine.css' %}"
+>
+
+{% endblock %}
+
 {% block content %}
-<h2>
-  Добавление машины
-</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Сохранить</button>
-</form>
+
+<section class="machine-form">
+
+    <div class="machine-form__header">
+
+        <h2 class="machine-form__title">
+            Добавление машины
+        </h2>
+
+    </div>
+
+
+    <form
+        class="machine-form__form"
+        method="post"
+    >
+
+        {% csrf_token %}
+
+
+        <div class="machine-form__fields">
+
+            {{ form.as_p }}
+
+        </div>
+
+
+        <div class="machine-form__actions">
+
+            <button
+                class="machine-form__submit"
+                type="submit"
+            >
+                Сохранить
+            </button>
+
+            <a
+                class="machine-form__cancel"
+                href="{% url 'core:machine_list' %}"
+            >
+                Отмена
+            </a>
+
+        </div>
+
+    </form>
+
+</section>
+
 {% endblock %}

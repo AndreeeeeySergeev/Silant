@@ -1,0 +1,505 @@
+
+.machines {
+    width: 100%;
+}
+
+
+.machines__header {
+    margin-bottom: 35px;
+}
+
+
+.machines__title {
+    margin: 0;
+
+    color: var(--blue);
+
+    font-size: clamp(30px, 4vw, 46px);
+
+    line-height: 1.2;
+}
+
+
+.machines__list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+
+.machine-card {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    min-height: 110px;
+
+    padding: 24px;
+
+    border: 2px solid var(--blue);
+
+    background-color: var(--white);
+
+    color: var(--black);
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.machine-card:hover {
+    background-color: var(--blue);
+
+    color: var(--white);
+
+    transform: translateY(-2px);
+}
+
+
+.machine-card__label {
+    font-size: 14px;
+
+    font-weight: 400;
+
+    opacity: 0.75;
+}
+
+
+.machine-card__serial {
+    font-size: 22px;
+
+    font-weight: 700;
+}
+
+
+.machines__empty {
+    margin: 0;
+
+    padding: 30px;
+
+    background-color: var(--white);
+
+    color: var(--blue);
+
+    text-align: center;
+}
+
+
+.machine-detail {
+    width: 100%;
+
+    max-width: 1100px;
+
+    margin: 0 auto;
+}
+
+
+.machine-detail__title {
+    margin: 0 0 30px;
+
+    color: var(--blue);
+
+    font-size: clamp(28px, 4vw, 42px);
+
+    line-height: 1.2;
+}
+
+
+.machine-detail__table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+
+    -webkit-overflow-scrolling: touch;
+}
+
+
+.machine-detail__table {
+    width: 100%;
+
+    min-width: 700px;
+
+    border-collapse: collapse;
+
+    background-color: var(--white);
+}
+
+
+.machine-detail__table th,
+.machine-detail__table td {
+    padding: 14px 18px;
+
+    border: 1px solid #d5d0c2;
+
+    text-align: left;
+
+    vertical-align: top;
+
+    line-height: 1.4;
+}
+
+
+.machine-detail__table th {
+    width: 38%;
+
+    background-color: var(--blue);
+
+    color: var(--white);
+
+    font-weight: 700;
+}
+
+
+.machine-detail__table td {
+    background-color: var(--white);
+
+    color: #222222;
+}
+
+
+.machine-detail__description {
+    display: block;
+
+    margin-top: 6px;
+
+    color: #666666;
+
+    font-size: 14px;
+
+    line-height: 1.4;
+}
+
+
+@media (max-width: 900px) {
+
+    .machines__list {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .machine-detail {
+        max-width: 100%;
+    }
+
+
+    .machine-detail__table {
+        min-width: 650px;
+    }
+
+
+    .machine-detail__table th,
+    .machine-detail__table td {
+        padding: 12px 14px;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .machines__list {
+        grid-template-columns: 1fr;
+
+        gap: 14px;
+    }
+
+
+    .machine-card {
+        min-height: 90px;
+
+        padding: 18px;
+    }
+
+
+    .machine-card__serial {
+        font-size: 20px;
+    }
+
+
+    .machine-detail__title {
+        margin-bottom: 25px;
+
+        font-size: 32px;
+    }
+
+
+    .machine-detail__table {
+        min-width: 600px;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .machine-detail__title {
+        font-size: 28px;
+    }
+
+
+    .machine-detail__table th,
+    .machine-detail__table td {
+        padding: 10px 12px;
+
+        font-size: 14px;
+    }
+
+
+    .machine-detail__description {
+        font-size: 13px;
+    }
+
+}
+
+/*
+   Форма добавления машины
+    */
+
+.machine-form {
+    width: 100%;
+
+    max-width: 850px;
+
+    margin: 0 auto;
+}
+
+
+.machine-form__header {
+    margin-bottom: 30px;
+}
+
+
+.machine-form__title {
+    margin: 0;
+
+    color: var(--blue);
+
+    font-size: clamp(30px, 3.5vw, 42px);
+
+    line-height: 1.2;
+}
+
+
+/*
+   Форма
+    */
+
+.machine-form__form {
+    padding: 30px;
+
+    border: 1px solid #d5d0c2;
+
+    border-radius: 6px;
+
+    background-color: var(--white);
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+
+.machine-form__fields p {
+    margin: 0 0 20px;
+}
+
+
+.machine-form__fields label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--blue);
+
+    font-size: 15px;
+
+    font-weight: 700;
+}
+
+
+.machine-form__fields input,
+.machine-form__fields select,
+.machine-form__fields textarea {
+    box-sizing: border-box;
+
+    width: 100%;
+
+    min-height: 44px;
+
+    padding: 9px 12px;
+
+    border: 1px solid #b8b2a4;
+
+    border-radius: 4px;
+
+    background-color: var(--white);
+
+    color: #222222;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.machine-form__fields textarea {
+    min-height: 110px;
+
+    resize: vertical;
+}
+
+
+.machine-form__fields input:focus,
+.machine-form__fields select:focus,
+.machine-form__fields textarea:focus {
+    border-color: var(--blue);
+
+    box-shadow: 0 0 0 2px rgba(22, 62, 108, 0.12);
+}
+
+
+/*
+   Ошибки Django
+   */
+
+.machine-form__fields .errorlist {
+    margin: 5px 0 8px;
+
+    padding: 0;
+
+    list-style: none;
+
+    color: var(--red);
+
+    font-size: 14px;
+}
+
+
+.machine-form__fields .helptext {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #666666;
+
+    font-size: 13px;
+}
+
+
+/*
+   Кнопки
+    */
+
+.machine-form__actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 30px;
+}
+
+
+.machine-form__submit,
+.machine-form__cancel {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 44px;
+
+    padding: 9px 22px;
+
+    border-radius: 4px;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.machine-form__submit {
+    border: 2px solid var(--red);
+
+    background-color: var(--red);
+
+    color: var(--white);
+}
+
+
+.machine-form__submit:hover {
+    background-color: transparent;
+
+    color: var(--red);
+}
+
+
+.machine-form__cancel {
+    border: 2px solid var(--blue);
+
+    background-color: transparent;
+
+    color: var(--blue);
+}
+
+
+.machine-form__cancel:hover {
+    background-color: var(--blue);
+
+    color: var(--white);
+}
+
+
+/*
+   Адаптивность формы
+    */
+
+@media (max-width: 600px) {
+
+    .machine-form {
+        max-width: 100%;
+    }
+
+
+    .machine-form__form {
+        padding: 18px;
+    }
+
+
+    .machine-form__actions {
+        flex-direction: column;
+    }
+
+
+    .machine-form__submit,
+    .machine-form__cancel {
+        width: 100%;
+    }
+
+}

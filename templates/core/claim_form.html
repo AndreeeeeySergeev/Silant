@@ -1,24 +1,64 @@
-
 {% extends "core/base.html" %}
 
-{% block content %}
+{% load static %}
 
-<h2>
-    Добавление рекламации
-</h2>
+{% block extra_css %}
 
-
-<form method="post">
-
-    {% csrf_token %}
-
-    {{ form.as_p }}
-
-    <button type="submit">
-        Сохранить
-    </button>
-
-</form>
+<link
+    rel="stylesheet"
+    href="{% static 'css/claim.css' %}"
+>
 
 {% endblock %}
 
+{% block content %}
+
+<section class="claim-form">
+
+    <div class="claim-form__header">
+
+        <h2 class="claim-form__title">
+            Добавление рекламации
+        </h2>
+
+    </div>
+
+
+    <form
+        class="claim-form__form"
+        method="post"
+    >
+
+        {% csrf_token %}
+
+
+        <div class="claim-form__fields">
+
+            {{ form.as_p }}
+
+        </div>
+
+
+        <div class="claim-form__actions">
+
+            <button
+                class="claim-form__submit"
+                type="submit"
+            >
+                Сохранить
+            </button>
+
+            <a
+                class="claim-form__cancel"
+                href="{% url 'core:claim_list' %}"
+            >
+                Отмена
+            </a>
+
+        </div>
+
+    </form>
+
+</section>
+
+{% endblock %}

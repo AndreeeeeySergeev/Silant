@@ -1,252 +1,327 @@
 {% extends "core/base.html" %}
 
-{% block content %}
+{% load static %}
 
-<h2>
-    Рекламации
-</h2>
+{% block extra_css %}
 
-
-{% if request.user.role == "manager" or request.user.role == "service" %}
-
-    <p>
-        <a href="{% url 'core:claim_create' %}">
-            Добавить рекламацию
-        </a>
-    </p>
-
-{% endif %}
-
-
-<form method="get">
-
-    <p>
-        <label for="failure_node">
-            Узел отказа:
-        </label>
-
-        <select name="failure_node" id="failure_node">
-
-            <option value="">
-                Все узлы отказа
-            </option>
-
-            {% for node in failure_nodes %}
-
-                <option value="{{ node.id }}">
-                    {{ node.name }}
-                </option>
-
-            {% endfor %}
-
-        </select>
-    </p>
-
-
-    <p>
-        <label for="recovery_method">
-            Способ восстановления:
-        </label>
-
-        <select name="recovery_method" id="recovery_method">
-
-            <option value="">
-                Все способы восстановления
-            </option>
-
-            {% for method in recovery_methods %}
-
-                <option value="{{ method.id }}">
-                    {{ method.name }}
-                </option>
-
-            {% endfor %}
-
-        </select>
-    </p>
-
-
-    <p>
-        <label for="service_company">
-            Сервисная компания:
-        </label>
-
-        <select name="service_company" id="service_company">
-
-            <option value="">
-                Все сервисные компании
-            </option>
-
-            {% for company in service_companies %}
-
-                <option value="{{ company.id }}">
-                    {{ company.company_name }}
-                </option>
-
-            {% endfor %}
-
-        </select>
-    </p>
-
-
-    <button type="submit">
-        Применить фильтры
-    </button>
-
-</form>
-
-
-<p>
-    Сортировка:
-</p>
-
-<p>
-    <a href="?sort=failure_date">
-        Сначала старые
-    </a>
-
-    |
-
-    <a href="?sort=-failure_date">
-        Сначала новые
-    </a>
-</p>
-
-
-<table border="1">
-
-    <thead>
-
-        <tr>
-
-            <th>
-                Дата отказа
-            </th>
-
-            <th>
-                Наработка, м/час
-            </th>
-
-            <th>
-                Узел отказа
-            </th>
-
-            <th>
-                Описание отказа
-            </th>
-
-            <th>
-                Способ восстановления
-            </th>
-
-            <th>
-                Используемые запасные части
-            </th>
-
-            <th>
-                Дата восстановления
-            </th>
-
-            <th>
-                Время простоя, дней
-            </th>
-
-            <th>
-                Машина
-            </th>
-
-            <th>
-                Сервисная компания
-            </th>
-
-        </tr>
-
-    </thead>
-
-
-    <tbody>
-
-        {% for claim in claims %}
-
-            <tr>
-
-                <td>
-                    <a href="{% url 'core:claim_detail' claim.pk %}">
-                        {{ claim.failure_date }}
-                    </a>
-                </td>
-
-                <td>
-                    <a href="{% url 'core:claim_detail' claim.pk %}">
-                        {{ claim.operating_hours }}
-                    </a>
-                </td>
-
-                <td>
-                    <a href="{% url 'core:claim_detail' claim.pk %}">
-                        {{ claim.failure_node.name }}
-                    </a>
-                </td>
-
-                <td>
-                    <a href="{% url 'core:claim_detail' claim.pk %}">
-                        {{ claim.failure_description }}
-                    </a>
-                </td>
-
-                <td>
-                    <a href="{% url 'core:claim_detail' claim.pk %}">
-                        {{ claim.recovery_method.name }}
-                    </a>
-                </td>
-
-                <td>
-                    <a href="{% url 'core:claim_detail' claim.pk %}">
-                        {{ claim.spare_parts }}
-                    </a>
-                </td>
-
-                <td>
-                    <a href="{% url 'core:claim_detail' claim.pk %}">
-                        {{ claim.recovery_date|default:"—" }}
-                    </a>
-                </td>
-
-                <td>
-                    <a href="{% url 'core:claim_detail' claim.pk %}">
-                        {{ claim.downtime|default:"—" }}
-                    </a>
-                </td>
-
-                <td>
-                    <a href="{% url 'core:claim_detail' claim.pk %}">
-                        {{ claim.machine.serial_number }}
-                    </a>
-                </td>
-
-                <td>
-                    <a href="{% url 'core:claim_detail' claim.pk %}">
-                        {{ claim.service_company.company_name }}
-                    </a>
-                </td>
-
-            </tr>
-
-        {% empty %}
-
-            <tr>
-
-                <td colspan="10">
-                    Нет рекламаций
-                </td>
-
-            </tr>
-
-        {% endfor %}
-
-    </tbody>
-
-</table>
+<link
+    rel="stylesheet"
+    href="{% static 'css/claim.css' %}"
+>
 
 {% endblock %}
 
+{% block content %}
+
+<section class="claims">
+
+    <div class="claims__header">
+
+        <h2 class="claims__title">
+            Рекламации
+        </h2>
+
+
+        {% if request.user.role == "manager" or request.user.role == "service" %}
+
+            <a
+                class="claims__create"
+                href="{% url 'core:claim_create' %}"
+            >
+                Добавить рекламацию
+            </a>
+
+        {% endif %}
+
+    </div>
+
+
+    <form
+        class="claims__filters"
+        method="get"
+    >
+
+        <div class="claims__filter">
+
+            <label
+                class="claims__filter-label"
+                for="failure_node"
+            >
+                Узел отказа:
+            </label>
+
+            <select
+                class="claims__filter-select"
+                name="failure_node"
+                id="failure_node"
+            >
+
+                <option value="">
+                    Все узлы отказа
+                </option>
+
+                {% for node in failure_nodes %}
+
+                    <option value="{{ node.id }}">
+                        {{ node.name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <div class="claims__filter">
+
+            <label
+                class="claims__filter-label"
+                for="recovery_method"
+            >
+                Способ восстановления:
+            </label>
+
+            <select
+                class="claims__filter-select"
+                name="recovery_method"
+                id="recovery_method"
+            >
+
+                <option value="">
+                    Все способы восстановления
+                </option>
+
+                {% for method in recovery_methods %}
+
+                    <option value="{{ method.id }}">
+                        {{ method.name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <div class="claims__filter">
+
+            <label
+                class="claims__filter-label"
+                for="service_company"
+            >
+                Сервисная компания:
+            </label>
+
+            <select
+                class="claims__filter-select"
+                name="service_company"
+                id="service_company"
+            >
+
+                <option value="">
+                    Все сервисные компании
+                </option>
+
+                {% for company in service_companies %}
+
+                    <option value="{{ company.id }}">
+                        {{ company.company_name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <button
+            class="claims__filter-button"
+            type="submit"
+        >
+            Применить фильтры
+        </button>
+
+    </form>
+
+
+    <div class="claims__sorting">
+
+        <span class="claims__sorting-label">
+            Сортировка:
+        </span>
+
+        <a
+            class="claims__sorting-link"
+            href="?sort=failure_date"
+        >
+            Сначала старые
+        </a>
+
+        <a
+            class="claims__sorting-link"
+            href="?sort=-failure_date"
+        >
+            Сначала новые
+        </a>
+
+    </div>
+
+
+    <div class="claims__table-wrapper">
+
+        <table class="claims__table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Дата отказа</th>
+
+                    <th>Наработка, м/час</th>
+
+                    <th>Узел отказа</th>
+
+                    <th>Описание отказа</th>
+
+                    <th>Способ восстановления</th>
+
+                    <th>Используемые запасные части</th>
+
+                    <th>Дата восстановления</th>
+
+                    <th>Время простоя, дней</th>
+
+                    <th>Машина</th>
+
+                    <th>Сервисная компания</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for claim in claims %}
+
+                    <tr>
+
+                        <td>
+                            <a
+                                class="claims__table-link"
+                                href="{% url 'core:claim_detail' claim.pk %}"
+                            >
+                                {{ claim.failure_date }}
+                            </a>
+                        </td>
+
+                        <td>
+                            <a
+                                class="claims__table-link"
+                                href="{% url 'core:claim_detail' claim.pk %}"
+                            >
+                                {{ claim.operating_hours }}
+                            </a>
+                        </td>
+
+                        <td>
+                            <a
+                                class="claims__table-link"
+                                href="{% url 'core:claim_detail' claim.pk %}"
+                            >
+                                {{ claim.failure_node.name }}
+                            </a>
+                        </td>
+
+                        <td>
+                            <a
+                                class="claims__table-link"
+                                href="{% url 'core:claim_detail' claim.pk %}"
+                            >
+                                {{ claim.failure_description }}
+                            </a>
+                        </td>
+
+                        <td>
+                            <a
+                                class="claims__table-link"
+                                href="{% url 'core:claim_detail' claim.pk %}"
+                            >
+                                {{ claim.recovery_method.name }}
+                            </a>
+                        </td>
+
+                        <td>
+                            <a
+                                class="claims__table-link"
+                                href="{% url 'core:claim_detail' claim.pk %}"
+                            >
+                                {{ claim.spare_parts }}
+                            </a>
+                        </td>
+
+                        <td>
+                            <a
+                                class="claims__table-link"
+                                href="{% url 'core:claim_detail' claim.pk %}"
+                            >
+                                {{ claim.recovery_date|default:"—" }}
+                            </a>
+                        </td>
+
+                        <td>
+                            <a
+                                class="claims__table-link"
+                                href="{% url 'core:claim_detail' claim.pk %}"
+                            >
+                                {{ claim.downtime|default:"—" }}
+                            </a>
+                        </td>
+
+                        <td>
+                            <a
+                                class="claims__table-link"
+                                href="{% url 'core:claim_detail' claim.pk %}"
+                            >
+                                {{ claim.machine.serial_number }}
+                            </a>
+                        </td>
+
+                        <td>
+                            <a
+                                class="claims__table-link"
+                                href="{% url 'core:claim_detail' claim.pk %}"
+                            >
+                                {{ claim.service_company.company_name }}
+                            </a>
+                        </td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td
+                            class="claims__empty"
+                            colspan="10"
+                        >
+                            Нет рекламаций
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+{% endblock %}

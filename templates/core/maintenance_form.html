@@ -1,20 +1,65 @@
 {% extends "core/base.html" %}
 
+{% load static %}
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/maintenance.css' %}"
+>
+
+{% endblock %}
+
 {% block content %}
 
-<h2>
-    Добавление ТО
-</h2>
+<section class="maintenance-form">
 
-<form method="post">
+    <div class="maintenance-form__header">
 
-{% csrf_token %}
+        <h2 class="maintenance-form__title">
+            Добавление ТО
+        </h2>
 
-{{ form.as_p }}
+    </div>
 
-<button>
-Сохранить
-</button>
 
-</form>
+    <form
+        class="maintenance-form__form"
+        method="post"
+    >
+
+        {% csrf_token %}
+
+
+        <div class="maintenance-form__fields">
+
+            {{ form.as_p }}
+
+        </div>
+
+
+        <div class="maintenance-form__actions">
+
+            <button
+                class="maintenance-form__submit"
+                type="submit"
+            >
+                Сохранить
+            </button>
+
+            <a
+                class="maintenance-form__cancel"
+                href="{% url 'core:maintenance_list' %}"
+            >
+                Отмена
+            </a>
+
+        </div>
+
+    </form>
+
+</section>
+
 {% endblock %}
+
